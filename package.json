@@ -17,12 +17,13 @@
     "gatsby-plugin-react-helmet": "^3.4.0",
     "gatsby-plugin-sharp": "^2.8.0",
     "gatsby-remark-copy-linked-files": "^2.4.0",
+    "gatsby-remark-embed-snippet": "^4.7.0",
     "gatsby-remark-images": "^3.5.1",
-    "gatsby-remark-prismjs": "^3.7.0",
+    "gatsby-remark-prismjs": "^3.10.0",
     "gatsby-remark-responsive-iframe": "^2.5.0",
     "gatsby-remark-smartypants": "^2.4.0",
     "gatsby-source-filesystem": "^2.5.0",
-    "gatsby-transformer-remark": "^2.10.0",
+    "gatsby-transformer-remark": "^2.13.1",
     "gatsby-transformer-sharp": "^2.6.0",
     "prismjs": "^1.22.0",
     "react": "^16.12.0",
@@ -32,6 +33,9 @@
     "typeface-montserrat": "0.0.75"
   },
   "devDependencies": {
+    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
+    "gatsby-plugin-mdx": "^1.7.1",
     "prettier": "2.1.2"
   },
   "homepage": "https://github.com/gatsbyjs/gatsby-starter-blog#readme",
