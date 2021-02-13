@@ -1,5 +1,7 @@
 import React from "react"
+import {MDXRenderer} from 'gatsby-plugin-mdx';
 import { Link, graphql } from "gatsby"
+import {Container, Heading, Text} from '@chakra-ui/react';
 
 import Bio from "../components/bio"
 import Layout from "../components/layout"
@@ -16,16 +18,17 @@ const BlogPostTemplate = ({ data, location }) => {
         title={post.frontmatter.title}
         description={post.frontmatter.description || post.excerpt}
       />
+      <Container>
       <article
         className="blog-post"
         itemScope
         itemType="http://schema.org/Article"
       >
-        <header>
+        <Heading mb="5">
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
           <p>{post.frontmatter.date}</p>
-        </header>
-        <section
+        </Heading>
+        <Text
           dangerouslySetInnerHTML={{ __html: post.html }}
           itemProp="articleBody"
         />
@@ -34,6 +37,7 @@ const BlogPostTemplate = ({ data, location }) => {
           <Bio />
         </footer>
       </article>
+      </Container>
       <nav className="blog-post-nav">
         <ul
           style={{
