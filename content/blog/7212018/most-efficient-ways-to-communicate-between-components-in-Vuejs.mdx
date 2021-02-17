@@ -1,0 +1,284 @@
+---
+layout: Post
+title: Most efficient ways to communicate between components in Vuejs
+thumbnail: /img/vuejs.png
+content: VueJS has increasingly become a top of mind framework in front end development lately. By reckoning, it harnesses the best features of both ReactJS and AngularJS and did a good job in both DOM manipulations and State Mangement (Vuex).
+pageClass: post
+date: '2018-07-21T22:40:32.169Z'
+sidebar: false
+footer: Thien
+id: 7856
+---
+
+import { Badge } from '@chakra-ui/react'
+
+VueJS has increasingly become a top of mind framework in front end development lately.
+
+By reckoning, it harnesses the best features of both ReactJS and AngularJS and did a good job in both DOM manipulations and State Mangement ([Vuex](https://vuex.vuejs.org/)).
+
+In this article, we shall take a closer view at most efficient ways to pass data between components in VueJS. The explanations below are in [Singe File Component](https://vuejs.org/v2/guide/single-file-components.html) format.
+
+## 1. Passing through props:
+
+**UserDetails.vue**
+
+```js
+<template>
+    <main>
+        <span> user {{ name }} </span>
+        <span> Identity Number {{ id }} </span>
+    </main>
+</template>
+<script>
+export default {
+    name: 'UserDetails',
+    props: {
+        name: {
+            type: String
+        },
+        id: {
+            type: Number
+        }
+    }
+}
+</script>
+```
+
+We decide to make the user detail component reusable with 2 props: `name` and `id`. Hence, we will pass the data via props:
+
+**ParentComponent.vue**
+
+```js
+<template>
+    <user-detail name="user.name" id="user.id"></user-detail>
+</template>
+
+<script>
+import { mapState } from 'vuex';
+import UserDetail from '/components/UserDetail.vue';
+export default {
+    data () {
+        return {
+            // some variables
+        }
+    },
+
+    components: {
+        'user-detail': UserDetail
+    },
+
+    computed: {
+        // Map user object from state to component computed variable
+        ...mapState({
+            user: state => state.user
+        })
+    },
+
+    beforeMount () {
+        // Do some async work to retrieve user details data
+        this.$store.dispatch('getUserDetail')
+    }
+}
+
+</script>
+```
+
+The user details are now a child component, it receives the data in the parent as the result of doing some async work. The data maybe retrieved from an API.
+After having dispatched the action `getUserDetail`, the state now received retrieved a new user object. We assigned the new value into the `UserDetail` component by writing them inline just like HTML attributes. Easy Peasy!
+
+## **2. Passing through state:**
+
+You can read more about Vuex [here](https://vuex.vuejs.org/)
+
+Every components can have global access to state through `this.$store.state` or using helper mapState.
+
+## **3. Passing through Event:**
+
+### **3.1. Emit/Listen to events in instance scope:**
+
+Supposedly we have a component:
+
+```js
+<template>
+    <button @click="emitEvent"></button>
+</template>
+<script>
+export default {
+    data () {
+        return {
+            message: 'Hello World'
+        }
+    },
+
+    methods: {
+        emitEvent () {
+            // some work before emit an event
+            func()
+            this.$emit('INIT_USER', this.message)
+        },
+        listenEvent () {
+            this.$on('INIT_USER', (val) => {
+                // Do something meaningful
+            })
+        }
+    },
+
+    mounted () {
+        this.listenEvent();
+    }
+}
+</script>
+```
+
+At instance scope (or at single file component scope), we are only able to emit and listen to event freely. Outside this scope, it can’t be done. In this example, when we click the button to run `emitEvent` to emit a local event named `INIT_USER`, then listen to the event whenever it’s emitted by running `listenEvent` function. So here comes another problem, what if we want to communicate with another component in another instance scope? Keep readin’!
+
+### **3.2. Emit/Listen to events in global scope:**
+
+This is a little bit tricky for a beginner who have just started to learn VueJS. Global Event Bus is here to control all of the events emit from Root.
+
+First, we create `event-bus.js` then declare a Vue instance as an export. Now we can emit and listen to an event in any components in our application.
+
+**event-bus.js**
+
+```js
+import Vue from 'vue'
+export const eventBus = new Vue()
+```
+
+Second, learn how to play with it:
+
+**ComponentA.vue**
+
+```js
+<template>
+</template>
+<script>
+import { eventBus } from 'path/event-bus.js';
+
+export default {
+    data () {
+        return {
+            message: 'Hello World'
+        }
+    },
+
+    methods: {
+        emitGlobalEvent () {
+            eventBus.$emit('INIT_USER', this.message)
+        }
+    },
+
+    mounted () {
+        this.emitGlobalEvent();
+    }
+}
+</script>
+```
+
+When component A is mounted, we emit a global event named `INIT_USER`, passing a arbitrary value. In other component:
+
+**ComponentB.vue**
+
+```js
+<template>
+</template>
+<script>
+import { eventBus } from 'path/event-bus.js';
+
+export default {
+    methods: {
+        listenGlobalEvent () {
+            eventBus.$on('INIT_USER', (message) => {
+                // Do something
+            })
+        }
+    },
+
+    mounted () {
+        this.listenGlobalEvent();
+    }
+}
+</script>
+```
+
+When component B is mounted, we listen to a global event named `INIT_USER`, passing a callback function with argument is message which is the value emitted from Component A then execute the callback function with given value.
+
+## **4. Passing through vue-router:**
+
+**Demonstrations**
+
+<Badge colorScheme="green" my={5}>
+  There are 3 modes when passing data to props through routers.
+</Badge>
+
+### **4.1. Boolean mode:**
+
+It will only receive a boolean value either true or false, each parameters passed from components A is going to be the value of component B’s props.
+For example:
+
+```js
+// Boolean mode
+// Component B's props are any parameters passed by routing from Component A
+
+export const routers = [
+  {
+    path: '/users',
+    component: () => import('@/components/ComponentA.vue'),
+  },
+  {
+    path: '/userDetails',
+    component: () => import('@/components/ComponentB.vue'),
+    props: true,
+  },
+]
+```
+
+When routing to Component B, the props inside will receive the reflected value. It’s equivalent when we declared a default value for props id in Component B.
+
+<Badge colorScheme="red" my={3}>
+id must be declared as a prop in component B
+</Badge>
+
+### **4.2. Object mode:**
+
+Just like the Boolean Mode, we will decouple the props in Component B using [Object Destructuring (ES6)](https://babeljs.io/docs/en/learn/#destructuring) and pass the value we want through router. Props declared in Component B:
+
+```js
+// Object mode
+export const routers = [
+  {
+    path: '/users',
+    component: () => import('@/components/ComponentA.vue'),
+  },
+  {
+    path: '/userDetails',
+    component: () => import('@/components/ComponentB.vue'),
+    props: { show: true, default: false },
+  },
+]
+```
+
+### **4.3. Function mode**
+
+```js
+// Function mode
+// Allow you to use route parameters and return the "shaped" props.
+export const routers = [
+  {
+    path: '/users',
+    component: () => import('@/components/ComponentA.vue'),
+  },
+  {
+    path: '/userDetails',
+    component: () => import('@/components/ComponentB.vue'),
+    props: route => ({ filter: route.params.filter }),
+  },
+]
+```
+
+You can pass the route argument here is ```$route``` contain the route data from Comp B in the callback. Extracting data from `$route` and do something before routing to Comp B. 
+Otherwise, the argument of the function is optional yet you must return an object contain props.
+
+Personally, I love this feature from VueJS due to its amazing versatility. If it’s done right, then it will be quite powerful.
+
+## **5. Passing through LocalStorage or Cookies (disencouraged)**
