@@ -24,8 +24,7 @@ const BlogPostTemplate = props => {
       </Badge>
       <Text
         className="markdown-body"
-        colorScheme="gray"
-        color={colorMode === 'dark' ? 'white' : 'blackAlpha'}
+        color={colorMode === 'dark' ? 'whiteAlpha.900' : 'gray.800'}
         my={5}
       >
         <MDXRenderer>{post.body}</MDXRenderer>
