@@ -1,0 +1,38 @@
+import { color, useColorMode } from '@chakra-ui/react'
+import React, { useCallback, useEffect, useRef } from 'react'
+
+const Comment = () => {
+  const { colorMode } = useColorMode()
+
+  const commentRef = useRef(null)
+
+  const appendUterrances = node => {
+    const script = document.createElement('script')
+    if (node && colorMode) {
+      const theme = `github-${colorMode}`
+      const attributes = {
+        src: 'https://utteranc.es/client.js',
+        repo: 'thienphanexcalibur/personal-blog',
+        ['issue-term']: 'title',
+        theme,
+        crossorigin: 'anonymous',
+        async: true,
+      }
+      for (const [key, value] of Object.entries(attributes)) {
+        script.setAttribute(key, value)
+      }
+      node.appendChild(script)
+    }
+  }
+
+  useEffect(() => {
+    appendUterrances(commentRef.current);
+    return () => {
+        commentRef.current.innerHTML = '';
+    }
+  }, [colorMode]);
+
+  return <div ref={commentRef} />
+}
+
+export default Comment
