@@ -153,7 +153,7 @@ module.exports = {
          * @property {boolean} [isUsingColorMode=true]
          * if `false`, this plugin will not use <ColorModeProvider />
          */
-        isUsingColorMode: false,
+        isUsingColorMode: true,
         /**
          * @property {number} [portalZIndex=40]
          * The z-index to apply to all portal nodes. This is useful
