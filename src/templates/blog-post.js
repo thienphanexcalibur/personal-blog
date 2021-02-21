@@ -20,13 +20,12 @@ const BlogPostTemplate = props => {
       <SEO title={post.frontmatter.title} description={post.excerpt} />
       <Heading maxW="100%">{post.frontmatter.title}</Heading>
       <Badge colorScheme="cyan" mt={5}>
-        <Text colorScheme="whiteAlpha" fontSize="xs" fontWeight="600">
+        <Text colorScheme="cyan" fontSize="xs" fontWeight="700">
           {post.frontmatter.date}
         </Text>
       </Badge>
       <Text
         className="markdown-body"
-        color={colorMode === 'dark' ? 'whiteAlpha.900' : 'gray.800'}
         my={5}
       >
         <MDXRenderer>{post.body}</MDXRenderer>
