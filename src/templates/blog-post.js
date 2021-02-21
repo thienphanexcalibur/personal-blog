@@ -1,19 +1,27 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import { Link, graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
-import { Heading, Text, Badge, useColorMode, Box } from '@chakra-ui/react'
+import {
+  Heading,
+  Text,
+  Badge,
+  useColorMode,
+  Box,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import Bio from '../components/Bio'
 import Layout from '../components/Layout'
 import SEO from '../components/seo'
 import { Helmet } from 'react-helmet'
-import Comment from './comment';
-require('github-markdown-css')
+import Comment from './comment'
+require('./github-markdown.css')
 
 const BlogPostTemplate = props => {
   const post = props.data.mdx
   const siteTitle = props.data.site.siteMetadata.title
   const { previous, next } = props.pageContext
   const { colorMode } = useColorMode()
+  const markdownColor = useColorModeValue('gray.800', 'white')
 
   return (
     <Layout location={props.location} title={siteTitle}>
@@ -24,11 +32,10 @@ const BlogPostTemplate = props => {
           {post.frontmatter.date}
         </Text>
       </Badge>
-      <Text
-        className="markdown-body"
-        my={5}
-      >
-        <MDXRenderer>{post.body}</MDXRenderer>
+      <Text py={5} color={markdownColor}>
+        <article className="markdown-body">
+          <MDXRenderer>{post.body}</MDXRenderer>
+        </article>
       </Text>
       <Bio />
       <ul

@@ -13,7 +13,7 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 const Header = ({ title }) => {
   const { colorMode, toggleColorMode } = useColorMode()
   return (
-    <Flex alignItems="center" justifyContent="space-between" mb={5}>
+    <Flex alignItems="center" justifyContent="space-between" my={5}>
       <Heading fontSize="sm">
         <Link
           style={{
@@ -39,11 +39,11 @@ class Layout extends React.Component {
     const { title, children } = this.props
 
     return (
-      <Container my={10} overflowX="hidden">
+      <Container my={5} overflowX="hidden">
         <Header title={title} />
         {children}
         <footer style={{ marginTop: '1rem' }}>
-          <Text textAlign="center" fontWeight="700" colorScheme="gray">
+          <Text textAlign="left" fontWeight="700" fontSize="sm" colorScheme="gray">
             © {new Date().getFullYear()}, Thien K. Phan
           </Text>
         </footer>
