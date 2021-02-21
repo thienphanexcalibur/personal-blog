@@ -39,7 +39,7 @@ class Layout extends React.Component {
     const { title, children } = this.props
 
     return (
-      <Container py={10}>
+      <Container py={10} overflowX="hidden">
         <Header title={title} />
         {children}
         <footer style={{ marginTop: '1rem' }}>
