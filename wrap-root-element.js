@@ -2,8 +2,6 @@ import React from 'react'
 import { MDXProvider } from '@mdx-js/react'
 import { Code } from './src/components/code'
 import { preToCodeBlock } from 'mdx-utils'
-import { ColorModeScript } from '@chakra-ui/react'
-import theme from './src/@chakra-ui/gatsby-plugin/theme'
 
 // components is its own object outside of render so that the references to
 // components are stable
@@ -20,11 +18,6 @@ const components = {
   },
 }
 
-export const wrapRootElement = ({ element, setPreBodyComponents }) =>
-  setPreBodyComponents([
-    <ColorModeScript
-      initialColorMode={theme.config.initialColorMode}
-      key="chakra-ui-no-flash"
-    />,
-    <MDXProvider components={components}>{element}</MDXProvider>,
-  ])
+export const wrapRootElement = ({ element }) => (
+  <MDXProvider components={components}>{element}</MDXProvider>
+)
