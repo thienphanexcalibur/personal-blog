@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
-import { Heading, Text, Badge, useColorMode } from '@chakra-ui/react'
+import { Heading, Text, Badge, useColorMode, Box } from '@chakra-ui/react'
 import Bio from '../components/Bio'
 import Layout from '../components/Layout'
 import SEO from '../components/seo'
@@ -12,6 +12,25 @@ const BlogPostTemplate = props => {
   const siteTitle = props.data.site.siteMetadata.title
   const { previous, next } = props.pageContext
   const { colorMode } = useColorMode()
+
+  const appendUtterances = () => {
+    const script = document.createElement('scripts')
+    const attributes = {
+      src: 'https://utteranc.es/client.js',
+      repo: 'thienphanexcalibur/personal-blog',
+      ['issue-term']: 'title',
+      theme: 'github-light',
+      crossorigin: 'anonymous',
+    }
+    for (const [key, value] of Object.entries(attributes)) {
+      script.setAttribute(key, value)
+    }
+
+    document.head.append(script)
+  }
+  // useEffect(() => {
+  //   appendUtterances();
+  // }, [])
 
   return (
     <Layout location={props.location} title={siteTitle}>
@@ -54,6 +73,15 @@ const BlogPostTemplate = props => {
           )}
         </li>
       </ul>
+      <script
+        enabled="true"
+        src="https://utteranc.es/client.js"
+        repo="thienphanexcalibur/personal-blog"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async
+      ></script>
     </Layout>
   )
 }

@@ -35,19 +35,19 @@ function SEO({ description, lang, meta, keywords, title }) {
                 content: `website`,
               },
               {
-                name: `twitter:card`,
+                name: `facebook:card`,
                 content: `summary`,
               },
               {
-                name: `twitter:creator`,
+                name: `facebook:creator`,
                 content: data.site.siteMetadata.author.name,
               },
               {
-                name: `twitter:title`,
+                name: `facebook:title`,
                 content: title,
               },
               {
-                name: `twitter:description`,
+                name: `facebook:description`,
                 content: metaDescription,
               },
             ]
