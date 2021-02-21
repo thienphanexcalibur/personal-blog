@@ -20,10 +20,9 @@ const components = {
   },
 }
 
-export const wrapRootElement = ({ element, setPreBodyComponents }) =>
+export const wrapRootElement = ({ element, setPreBodyComponents }) => {
   setPreBodyComponents([
-    <ColorModeScript
-      key="chakra-ui-no-flash"
-    />,
-    <MDXProvider components={components}>{element}</MDXProvider>,
+    <ColorModeScript key="chakra-ui-no-flash" />,
+    <MDXProvider components={components}>{element}</MDXProvider>
   ])
+}
