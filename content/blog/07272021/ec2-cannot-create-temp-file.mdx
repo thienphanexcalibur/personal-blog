@@ -28,9 +28,9 @@ df -h
 
 ![df-h](./df.png)
 
-There you are: `/dev/xda1` is full `99%`, normally this is the main mount partition where most of the user's data are located.
+There you are: `/dev/xvda1` is full `99%`, normally this is the main mount partition where most of the user's data are located.
 
-Let's check sort out top 20 files with heaviest sizes and purge them:
+Let's sort out top 20 files with heaviest sizes and purge them:
 
 ``` bash
 cd $HOME
@@ -62,7 +62,7 @@ The end result:
 
 ![result](./result.png)
 
-My `/dev/xda1` was freed, I returned the available spaces to my instances. Mission success!
+My `/dev/xvda1` was freed, I returned the available spaces to my instances. Mission success!
 
 
 

@@ -1,5 +1,5 @@
-import { color, useColorMode } from '@chakra-ui/react'
-import React, { useCallback, useEffect, useRef } from 'react'
+import { useColorMode } from '@chakra-ui/react'
+import React, { useEffect, useRef } from 'react'
 
 const Comment = () => {
   const { colorMode } = useColorMode()
@@ -11,7 +11,7 @@ const Comment = () => {
     if (node && colorMode) {
       const theme = `github-${colorMode}`
       const attributes = {
-        src: 'https://utteranc.es/client.js',
+        src: `https://utteranc.es/client.js?v=${Math.round(Math.random() * 1000)}`,
         repo: 'thienphanexcalibur/personal-blog',
         ['issue-term']: 'title',
         theme,
@@ -27,9 +27,6 @@ const Comment = () => {
 
   useEffect(() => {
     appendUterrances(commentRef.current);
-    return () => {
-        commentRef.current.innerHTML = '';
-    }
   }, [colorMode]);
 
   return <div ref={commentRef} />
