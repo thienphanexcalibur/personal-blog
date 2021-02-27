@@ -27,6 +27,9 @@ const Comment = () => {
 
   useEffect(() => {
     appendUterrances(commentRef.current);
+    return () => {
+      commentRef.current.innerHTML = '';
+    }
   }, [colorMode]);
 
   return <div ref={commentRef} />
