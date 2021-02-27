@@ -1,6 +1,7 @@
 import React from 'react'
 import { MDXProvider } from '@mdx-js/react'
 import { Code } from './src/components/code'
+import { Code as C } from '@chakra-ui/react'
 import { preToCodeBlock } from 'mdx-utils'
 
 // components is its own object outside of render so that the references to
@@ -16,6 +17,7 @@ const components = {
       return <pre {...preProps} />
     }
   },
+  code: (props) => <C {...props} />
 }
 
 export const wrapRootElement = ({ element }) => (
